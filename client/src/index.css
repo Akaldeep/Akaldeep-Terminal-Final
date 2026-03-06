@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Force dark — this app is dark-only */
+:root, .dark {
+  --font-sans: 'Syne', sans-serif;
+  --font-display: 'Bebas Neue', cursive;
+  --font-mono: 'DM Mono', monospace;
+
+  --background: 240 10% 4%;
+  --foreground: 40 15% 92%;
+  --card: 240 8% 7%;
+  --card-foreground: 40 15% 92%;
+  --popover: 240 8% 8%;
+  --popover-foreground: 40 15% 92%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 20 10% 8%;
+  --secondary: 240 8% 12%;
+  --secondary-foreground: 40 15% 92%;
+  --muted: 240 8% 12%;
+  --muted-foreground: 240 5% 50%;
+  --accent: 240 8% 14%;
+  --accent-foreground: 40 15% 92%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 6% 15%;
+  --input: 240 6% 15%;
+  --ring: 38 92% 50%;
+  --radius: 0.5rem;
+}
+
+/* ── Base ─────────────────────────────────── */
+@layer base {
+  * { @apply border-border; }
+  html { color-scheme: dark; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.02em; }
+}
+
+/* ── Scrollbar ────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
+
+/* ── Animations ───────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Utilities ────────────────────────────── */
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-mono { font-family: var(--font-mono); }
+
+  .gold-shimmer {
+    background: linear-gradient(90deg, #F5A623 0%, #FFD07B 35%, #F5A623 60%, #D4891A 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .card-premium {
+    @apply bg-card border border-border rounded-lg overflow-hidden;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.25);
+    transition: box-shadow 0.2s;
+  }
+  .card-premium:hover {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.4), 0 8px 32px rgb(0 0 0 / 0.3);
+  }
+
+  .metric-glow { text-shadow: 0 0 24px hsl(38 92% 50% / 0.4); }
+
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(38 92% 50%), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* ── Map specific ─────────────────────────── */
+.rsm-geography { cursor: default !important; }
+.rsm-svg { display: block; }
+
+/* ── Table ────────────────────────────────── */
+.premium-table tr:hover td { background: hsl(var(--muted) / 0.4); transition: background 0.12s; }
+
+/* ── Selection ────────────────────────────── */
+::selection { background: hsl(38 92% 50% / 0.2); color: hsl(var(--foreground)); }
