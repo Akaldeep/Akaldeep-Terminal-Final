@@ -1,0 +1,157 @@
+You are a senior product designer and frontend architect building a professional financial analytics platform for Indian stock markets.
+Improve the entire UI/UX of this application to look institutional, systematic, modern, and trustworthy, similar to platforms like Screener, Bloomberg, Capital IQ, and Yahoo Finance Pro.
+
+1. Overall Design Language
+
+Use a clean, professional fintech aesthetic
+
+Prefer white / light background with subtle greys, dark text, and 1–2 accent colors only (blue/teal/indigo)
+
+Avoid flashy colors, gradients, or playful UI
+
+Consistent spacing, alignment, and typography across all screens
+
+Everything should feel structured, calm, and data-first
+
+2. Typography
+
+Use Inter / Roboto / Source Sans Pro
+
+Clear hierarchy:
+
+Page title (large, bold)
+
+Section headers (medium, semi-bold)
+
+Labels (small, muted)
+
+Data values (clear, readable, slightly emphasized)
+
+Numbers and financial metrics should stand out clearly
+
+3. Layout & Structure
+
+Introduce a proper dashboard layout
+
+Top navigation bar with app name and primary actions
+
+Left sidebar (if useful) for:
+
+Beta Calculator
+
+Comparable Companies
+
+Historical Beta
+
+Settings / Methodology
+
+Main content area should be card-based
+
+Each logical feature must be inside its own well-defined card or section
+
+4. Search & Inputs (Very Important)
+
+Implement a professional stock search bar
+
+Autocomplete / dropdown search
+
+Show company name + ticker + exchange (NSE/BSE)
+
+Inputs should:
+
+Have clear labels
+
+Show placeholder examples
+
+Use dropdowns instead of free text wherever possible
+
+Date selectors should be calendar-based
+
+5. Beta Calculation UI
+
+Clearly show:
+
+Selected company
+
+Index used (NIFTY 50 / SENSEX)
+
+Time period (5Y Daily / 5Y Monthly – explicitly visible)
+
+Display beta result in a highlighted metric card
+
+Add a small note explaining:
+
+Data frequency
+
+Calculation logic (simple, non-technical)
+
+6. Comparable Companies Section
+
+Show comparables in a clean table
+
+Company Name
+
+Ticker
+
+Sector / Industry
+
+Beta
+
+Key multiples (PE, PB, EV/EBITDA if available)
+
+Allow:
+
+Sorting
+
+Clear alignment of numbers
+
+Avoid random peers — UI should clearly indicate “Peer Selection Logic”
+
+7. Visual Hierarchy & Data Presentation
+
+Use:
+
+Cards
+
+Subtle borders
+
+Light shadows (very minimal)
+
+No clutter
+
+No unnecessary icons
+
+Every screen should answer:
+“What is the main data here?”
+
+8. Professional Touches
+
+Add:
+
+Tooltips for financial terms
+
+Subtle loading states (skeleton loaders)
+
+Clear empty states (“Select a company to begin”)
+
+No emojis
+
+No playful micro-animations
+
+9. Consistency & Cleanliness
+
+Ensure:
+
+Same button styles everywhere
+
+Same spacing system everywhere
+
+Same table formatting everywhere
+
+Remove anything that feels experimental, random, or unstructured
+
+10. Final Objective
+
+The UI should feel like a tool used by analysts, valuation professionals, and serious investors, not a demo or hobby project.
+
+Make the UI simple, systematic, professional, and credible.
