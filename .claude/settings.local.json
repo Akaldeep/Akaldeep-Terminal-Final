@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:gist.githubusercontent.com)"
     ]
   }
 }

@@ -58,11 +58,11 @@ function MetricTip({ id }: { id: string }) {
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
-          <button className="ml-1 text-white/45 hover:text-primary transition-colors"><Info className="w-3 h-3" /></button>
+          <button className="ml-1 text-white/45 hover:text-primary transition-colors"><Info className="w-4 h-4" /></button>
         </TooltipTrigger>
         <TooltipContent className="max-w-[220px] p-3 bg-card border-border">
-          <p className="text-[9px] font-mono text-primary uppercase tracking-wider mb-1 font-semibold">{def.full}</p>
-          <p className="text-[10px] text-white/70 leading-relaxed">{def.def}</p>
+          <p className="text-xs font-mono text-primary uppercase tracking-wider mb-1 font-semibold">{def.full}</p>
+          <p className="text-sm text-white/70 leading-relaxed">{def.def}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -124,7 +124,7 @@ export function ResultsSection({ data }: Props) {
             </div>
             <span className="text-xs font-mono text-primary uppercase tracking-widest font-semibold">Live Calculation Engine</span>
           </div>
-          <div className="flex flex-wrap gap-4 text-[10px] font-mono text-white/80">
+          <div className="flex flex-wrap gap-4 text-sm font-mono text-white/80">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Beta computed from <span className="text-white/90">{data.dataPoints?.toLocaleString() ?? "—"} daily price observations</span>
@@ -150,7 +150,7 @@ export function ResultsSection({ data }: Props) {
         <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-white/[0.02]">
           <div className="flex items-center gap-2">
             <Activity className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[9px] font-mono text-white/55 uppercase tracking-[0.18em]">Primary Asset Analysis</span>
+            <span className="text-xs font-mono text-white/70 uppercase tracking-[0.18em]">Primary Asset Analysis</span>
           </div>
           <a href={data.sourceUrl || `https://finance.yahoo.com/quote/${data.ticker}`} target="_blank" rel="noopener noreferrer"
             className="text-[9px] font-mono text-white/45 hover:text-primary transition-colors flex items-center gap-1 uppercase tracking-wider">
@@ -168,19 +168,19 @@ export function ResultsSection({ data }: Props) {
               {/* Industry / sector tags */}
               <div className="flex flex-wrap items-center gap-2">
                 {data.sector && (
-                  <span className="flex items-center gap-1 text-[9px] font-mono text-white/55 bg-white/5 border border-white/8 px-2 py-0.5 rounded">
+                  <span className="flex items-center gap-1 text-xs font-mono text-white/65 bg-white/5 border border-white/8 px-2 py-0.5 rounded">
                     <Building2 className="w-2.5 h-2.5" /> {data.sector}
                   </span>
                 )}
                 {data.industry && (
-                  <span className="text-[9px] font-mono text-primary/70 bg-primary/8 border border-primary/15 px-2 py-0.5 rounded">
+                  <span className="text-xs font-mono text-primary/80 bg-primary/8 border border-primary/15 px-2 py-0.5 rounded">
                     {data.industry}
                   </span>
                 )}
-                <span className="text-[9px] font-mono text-white/45 bg-white/4 border border-white/6 px-2 py-0.5 rounded">
+                <span className="text-xs font-mono text-white/65 bg-white/4 border border-white/6 px-2 py-0.5 rounded">
                   {data.exchange} · {data.marketIndex}
                 </span>
-                <span className="text-[9px] font-mono text-white/45 bg-white/4 border border-white/6 px-2 py-0.5 rounded">
+                <span className="text-xs font-mono text-white/65 bg-white/4 border border-white/6 px-2 py-0.5 rounded">
                   {data.period ?? "5Y"} Daily
                 </span>
               </div>
@@ -192,11 +192,11 @@ export function ResultsSection({ data }: Props) {
                 {data.beta.toFixed(3)}
               </div>
               <div className="space-y-1">
-                <div className={`flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-widest ${betaCfg.color}`}>
+                <div className={`flex items-center gap-1.5 text-sm font-mono uppercase tracking-widest ${betaCfg.color}`}>
                   <BetaIcon className="w-3.5 h-3.5" /> {betaCfg.label}
                 </div>
-                <div className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Beta Coefficient</div>
-                <div className="text-[9px] font-mono text-white/45">
+                <div className="text-sm font-mono text-white/70 uppercase tracking-wider">Beta Coefficient</div>
+                <div className="text-sm font-mono text-white/65">
                   R² {data.rSquared ? data.rSquared.toFixed(3) : "—"} · ρ {data.correlation ? data.correlation.toFixed(3) : "—"}
                 </div>
               </div>
@@ -210,7 +210,7 @@ export function ResultsSection({ data }: Props) {
             return (
               <div key={cat}>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[8px] font-mono text-white/45 uppercase tracking-[0.2em]">{cat}</span>
+                  <span className="text-xs font-mono text-white/60 uppercase tracking-[0.2em]">{cat}</span>
                   <div className="flex-1 h-px bg-white/5" />
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
@@ -219,13 +219,13 @@ export function ResultsSection({ data }: Props) {
                     const def = METRIC_DEFS[id];
                     return (
                       <div key={id} className="bg-white/[0.03] rounded border border-white/6 px-3 py-2.5 hover:border-primary/20 transition-colors group">
-                        <div className="flex items-center text-[8px] font-mono text-white/55 uppercase tracking-wider mb-1.5">
+                        <div className="flex items-center text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
                           {def.short} <MetricTip id={id} />
                         </div>
-                        <div className="font-mono text-sm font-medium text-white/80 tabular-nums">
+                        <div className="font-mono text-base font-bold text-white/90 tabular-nums">
                           {def.fmt(v!)}
                         </div>
-                        <div className="text-[7px] font-mono text-white/15 mt-0.5 truncate">{def.full}</div>
+                        <div className="text-xs font-mono text-white/40 mt-0.5 truncate">{def.full}</div>
                       </div>
                     );
                   })}
@@ -241,10 +241,10 @@ export function ResultsSection({ data }: Props) {
         <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-white/[0.02]">
           <div className="flex items-center gap-2">
             <BarChart2 className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[9px] font-mono text-white/55 uppercase tracking-[0.18em]">Industry Benchmark</span>
+            <span className="text-xs font-mono text-white/70 uppercase tracking-[0.18em]">Industry Benchmark</span>
           </div>
           {data.industry && (
-            <span className="text-[9px] font-mono text-primary/60 bg-primary/8 border border-primary/15 px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="text-xs font-mono text-primary/80 bg-primary/8 border border-primary/15 px-2 py-0.5 rounded uppercase tracking-wider">
               {data.industry}
             </span>
           )}
@@ -252,14 +252,14 @@ export function ResultsSection({ data }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-border">
           {[{ label: "Average Beta", v: avgBeta }, { label: "Median Beta", v: medianBeta }].map(({ label, v }) => (
             <div key={label} className="p-8 flex flex-col items-center gap-2">
-              <span className="text-[9px] font-mono text-white/70 uppercase tracking-[0.18em]">{label}</span>
-              <div className="font-display text-5xl text-white/80">{v !== null ? v.toFixed(3) : "—"}</div>
+              <span className="text-sm font-mono text-white/75 uppercase tracking-[0.18em]">{label}</span>
+              <div className="font-display text-5xl font-bold text-white/95">{v !== null ? v.toFixed(3) : "—"}</div>
               {v !== null && (
-                <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full ${data.beta > v ? "bg-red-500/10 text-red-400" : "bg-emerald-500/10 text-emerald-400"}`}>
+                <span className={`text-sm font-mono px-2 py-0.5 rounded-full ${data.beta > v ? "bg-red-500/10 text-red-400" : "bg-emerald-500/10 text-emerald-400"}`}>
                   Target is {data.beta > v ? "above" : "below"} {label.split(" ")[0].toLowerCase()}
                 </span>
               )}
-              <span className="text-[8px] font-mono text-white/45">{data.peers.length} peers</span>
+              <span className="text-sm font-mono text-white/60">{data.peers.length} peers</span>
             </div>
           ))}
         </div>
@@ -272,8 +272,8 @@ export function ResultsSection({ data }: Props) {
           return (
             <div className="px-5 pb-4 pt-2 border-t border-border">
               <div className="flex justify-between mb-1.5">
-                <span className="text-[8px] font-mono text-white/45 uppercase tracking-wider">Peer Beta Distribution</span>
-                <span className="text-[8px] font-mono text-white/45">{Math.min(...validBetas).toFixed(2)} — {Math.max(...validBetas).toFixed(2)}</span>
+                <span className="text-xs font-mono text-white/60 uppercase tracking-wider">Peer Beta Distribution</span>
+                <span className="text-xs font-mono text-white/60">{Math.min(...validBetas).toFixed(2)} — {Math.max(...validBetas).toFixed(2)}</span>
               </div>
               <div className="relative h-2 bg-white/5 rounded-full overflow-visible">
                 {validBetas.map((b, i) => (
@@ -285,9 +285,9 @@ export function ResultsSection({ data }: Props) {
                   initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 0.5, type: "spring" }} />
               </div>
               <div className="flex justify-between mt-1">
-                <span className="text-[7px] font-mono text-white/15">Defensive</span>
-                <span className="text-[7px] font-mono text-primary/50">▲ {data.ticker.split('.')[0]}</span>
-                <span className="text-[7px] font-mono text-white/15">Aggressive</span>
+                <span className="text-xs font-mono text-white/40">Defensive</span>
+                <span className="text-xs font-mono text-primary/70">▲ {data.ticker.split('.')[0]}</span>
+                <span className="text-xs font-mono text-white/40">Aggressive</span>
               </div>
             </div>
           );
@@ -299,13 +299,13 @@ export function ResultsSection({ data }: Props) {
         <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-white/[0.02]">
           <div className="flex items-center gap-2">
             <Layers className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[9px] font-mono text-white/55 uppercase tracking-[0.18em]">Peer Comparables</span>
-            <span className="text-[9px] font-mono text-white/45 bg-white/5 px-1.5 py-0.5 rounded">{data.peers.length}</span>
+            <span className="text-sm font-mono font-bold text-white/95 uppercase tracking-[0.18em]">Peer Comparables</span>
+            <span className="text-sm font-mono text-white/60 bg-white/5 px-1.5 py-0.5 rounded">{data.peers.length}</span>
           </div>
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-7 text-[9px] font-mono uppercase tracking-wider gap-1.5 border-white/10 bg-transparent text-white/50 hover:bg-white/5">
+                <Button variant="outline" size="sm" className="h-7 text-sm font-mono uppercase tracking-wider gap-1.5 border-white/10 bg-transparent text-white/60 hover:bg-white/5">
                   <Settings2 className="w-3 h-3" /> Columns
                 </Button>
               </DropdownMenuTrigger>
@@ -315,12 +315,12 @@ export function ResultsSection({ data }: Props) {
                   if (!ids.length) return null;
                   return (
                     <div key={cat}>
-                      <DropdownMenuLabel className="text-[8px] font-mono uppercase tracking-widest text-white/55">{cat}</DropdownMenuLabel>
+                      <DropdownMenuLabel className="text-xs font-mono uppercase tracking-widest text-white/70">{cat}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {ids.map(id => (
-                        <DropdownMenuCheckboxItem key={id} checked={visible.includes(id)} onCheckedChange={() => toggle(id)} className="text-xs font-mono">
+                        <DropdownMenuCheckboxItem key={id} checked={visible.includes(id)} onCheckedChange={() => toggle(id)} className="text-sm font-mono">
                           <span className="font-semibold">{METRIC_DEFS[id].short}</span>
-                          <span className="ml-2 text-white/55 text-[9px]">— {METRIC_DEFS[id].full}</span>
+                          <span className="ml-2 text-white/65 text-xs">— {METRIC_DEFS[id].full}</span>
                         </DropdownMenuCheckboxItem>
                       ))}
                     </div>
@@ -328,7 +328,7 @@ export function ResultsSection({ data }: Props) {
                 })}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="outline" size="sm" onClick={exportCSV} className="h-7 text-[9px] font-mono uppercase tracking-wider gap-1.5 border-white/10 bg-transparent text-white/50 hover:bg-white/5">
+            <Button variant="outline" size="sm" onClick={exportCSV} className="h-7 text-sm font-mono uppercase tracking-wider gap-1.5 border-white/10 bg-transparent text-white/60 hover:bg-white/5">
               <Download className="w-3 h-3" /> CSV
             </Button>
           </div>
@@ -338,16 +338,16 @@ export function ResultsSection({ data }: Props) {
           <Table className="premium-table">
             <TableHeader>
               <TableRow className="hover:bg-transparent border-border">
-                <TableHead className="w-8 pl-5 py-3 text-[11px] font-mono uppercase tracking-widest text-white/60">#</TableHead>
-                <TableHead className="min-w-[180px] py-3 text-[11px] font-mono uppercase tracking-widest text-white/60">Company</TableHead>
-                <TableHead className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
-                  Beta <span className="text-[7px] text-white/15 normal-case font-normal">(β)</span>
+                <TableHead className="w-8 pl-5 py-3 text-sm font-semibold font-mono uppercase tracking-widest text-white/75">#</TableHead>
+                <TableHead className="min-w-[180px] py-3 text-sm font-semibold font-mono uppercase tracking-widest text-white/75">Company</TableHead>
+                <TableHead className="text-right py-3 text-sm font-semibold font-mono uppercase tracking-widest text-white/75 whitespace-nowrap">
+                  Beta <span className="text-xs text-white/30 normal-case font-normal">(β)</span>
                 </TableHead>
-                <TableHead className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
-                  Alpha <span className="text-[7px] text-white/15 normal-case font-normal">(α)</span>
+                <TableHead className="text-right py-3 text-sm font-semibold font-mono uppercase tracking-widest text-white/75 whitespace-nowrap">
+                  Alpha <span className="text-xs text-white/30 normal-case font-normal">(α)</span>
                 </TableHead>
                 {ALL_METRIC_IDS.filter(id => visible.includes(id)).map(id => (
-                  <TableHead key={id} className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
+                  <TableHead key={id} className="text-right py-3 text-sm font-semibold font-mono uppercase tracking-widest text-white/75 whitespace-nowrap">
                     {METRIC_DEFS[id].short}
                   </TableHead>
                 ))}
@@ -363,18 +363,18 @@ export function ResultsSection({ data }: Props) {
                     transition={{ delay: idx * 0.04, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="border-b border-border/40 last:border-0 hover:bg-white/[0.025] transition-colors"
                   >
-                    <TableCell className="pl-5 py-3.5 font-mono text-xs text-white/60 tabular-nums">{idx + 1}</TableCell>
+                    <TableCell className="pl-5 py-3.5 font-mono text-sm text-white/60 tabular-nums">{idx + 1}</TableCell>
                     <TableCell className="py-3.5">
                       <div className="flex flex-col gap-0.5">
                         <a href={peer.sourceUrl || `https://finance.yahoo.com/quote/${peer.ticker}`} target="_blank" rel="noopener noreferrer"
-                          className="text-sm font-medium text-white/90 hover:text-primary transition-colors leading-tight flex items-center gap-1 group">
+                          className="text-base font-semibold text-white/95 hover:text-primary transition-colors leading-tight flex items-center gap-1 group">
                           {peer.name}
                           <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-40 transition-opacity" />
                         </a>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="font-mono text-xs text-white/70 uppercase tracking-wider">{peer.ticker}</span>
+                          <span className="font-mono text-sm text-white/65 uppercase tracking-wider">{peer.ticker}</span>
                           {peer.industry && (
-                            <span className="text-[7px] font-mono px-1 py-px bg-primary/8 border border-primary/15 rounded text-primary/50 uppercase tracking-wide">
+                            <span className="text-xs font-mono px-2 py-0.5 bg-primary/8 border border-primary/15 rounded text-white/65 uppercase tracking-wide">
                               {peer.industry}
                             </span>
                           )}
@@ -382,12 +382,12 @@ export function ResultsSection({ data }: Props) {
                       </div>
                     </TableCell>
                     <TableCell className="text-right py-3.5">
-                      <span className={`font-mono text-sm font-semibold tabular-nums ${cfg.color}`}>
+                      <span className={`font-mono text-base font-bold tabular-nums ${cfg.color}`}>
                         {peer.beta !== null ? peer.beta.toFixed(3) : "—"}
                       </span>
                     </TableCell>
                     <TableCell className="text-right py-3.5">
-                      <span className="font-mono text-xs text-white/70 tabular-nums">
+                      <span className="font-mono text-sm text-white/80 tabular-nums">
                         {peer.alpha !== null && peer.alpha !== undefined ? Number(peer.alpha).toFixed(5) : "—"}
                       </span>
                     </TableCell>
@@ -395,7 +395,7 @@ export function ResultsSection({ data }: Props) {
                       const v = val(peer, id);
                       return (
                         <TableCell key={id} className="text-right py-3.5">
-                          <span className="font-mono text-xs text-white/85 tabular-nums whitespace-nowrap">
+                          <span className="font-mono text-sm text-white/90 tabular-nums whitespace-nowrap">
                             {v !== null ? METRIC_DEFS[id].fmt(v) : "—"}
                           </span>
                         </TableCell>
@@ -409,10 +409,10 @@ export function ResultsSection({ data }: Props) {
         </div>
 
         <div className="px-5 py-3 border-t border-border bg-white/[0.01] flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[8px] font-mono text-white/45 leading-relaxed">
+          <p className="text-xs font-mono text-white/55 leading-relaxed">
             All financials: TTM where applicable · Non-INR converted at live Yahoo Finance FX rate · Peers deduplicated by base symbol, normalised to {data.exchange} exchange · Sorted by market cap
           </p>
-          <p className="text-[8px] font-mono text-white/15 shrink-0">
+          <p className="text-xs font-mono text-white/35 shrink-0">
             Source: Yahoo Finance · Damodaran Classification
           </p>
         </div>

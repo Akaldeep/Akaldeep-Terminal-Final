@@ -9,7 +9,8 @@ import {
 } from "react-simple-maps";
 import { motion, AnimatePresence } from "framer-motion";
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
+const INDIA_PATCH_URL = "/india-official.json";
 
 const WORLD_CENTER:  [number, number] = [20, 10];
 const INDIA_CENTER:  [number, number] = [78.9629, 22.5937];
@@ -249,10 +250,11 @@ export function WorldMap({ zoomed, analyzing, companyName, exchange = "NSE" }: W
         >
           <Sphere id="ocean-sphere" fill="hsl(240,15%,5%)" stroke="transparent" />
           <Graticule stroke="hsl(240,8%,14%)" strokeWidth={0.4} />
+          {/* Layer 1: World map — India rendered gold, all others dark */}
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const isIndia = geo.id === 356 || geo.properties?.name === "India";
+                const isIndia = geo.id === 356 || geo.id === "356" || geo.properties?.name === "India";
                 return (
                   <Geography key={geo.rsmKey} geography={geo}
                     fill={isIndia ? "hsl(38,70%,22%)" : "hsl(240,8%,9%)"}
@@ -265,6 +267,22 @@ export function WorldMap({ zoomed, analyzing, companyName, exchange = "NSE" }: W
                     }} />
                 );
               })
+            }
+          </Geographies>
+          {/* Layer 2: Official India patches — Kashmir/Ladakh/Aksai Chin in gold */}
+          <Geographies geography={INDIA_PATCH_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography key={geo.rsmKey} geography={geo}
+                  fill="hsl(38,70%,22%)"
+                  stroke="hsl(38,92%,50%)"
+                  strokeWidth={0.8}
+                  style={{
+                    default: { outline: "none" },
+                    hover: { outline: "none", fill: "hsl(38,80%,28%)" },
+                    pressed: { outline: "none" },
+                  }} />
+              ))
             }
           </Geographies>
         </ZoomableGroup>

@@ -326,9 +326,13 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
           ];
           for (const feed of rssFeeds) {
             try {
-              const r = await withTimeout(fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/xml,*/*' } }), 6000) as Response | null;
+              const proxyUrl = `${CF_WORKER}/?url=${encodeURIComponent(feed.url)}`;
+              const r = await withTimeout(fetch(proxyUrl, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/xml,*/*' } }), 6000) as Response | null;
               if (!r?.ok) continue;
-              const xml = await r.text();
+              const rawText = await r.text();
+              // Guard: if proxy returned JSON error instead of XML, skip this feed
+              const xml = rawText.trimStart().startsWith('<') ? rawText : null;
+              if (!xml) continue;
               const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)];
               if (!items.length) continue;
               const news = items.slice(0, 15).map((m: any) => {
