@@ -1,40 +1,28 @@
-import { pgTable, text, serial, timestamp, jsonb, doublePrecision } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const searches = pgTable("searches", {
-  id: serial("id").primaryKey(),
-  ticker: text("ticker").notNull(),
-  exchange: text("exchange").notNull(),
-  startDate: text("start_date").notNull(),
-  endDate: text("end_date").notNull(),
-  beta: doublePrecision("beta"),
-  peers: jsonb("peers").$type<{ 
-    ticker: string; 
-    name: string; 
-    beta: number | null; 
-    sector: string;
-    similarityScore?: number;
-    keywords?: string[];
-    confidence?: "High" | "Medium" | "Fallback";
-  }[]>().notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+// ── In-memory storage types (no database) ────────────────────────────────────
 
-export const companyProfiles = pgTable("company_profiles", {
-  ticker: text("ticker").primaryKey(),
-  keywords: text("keywords").array().notNull(),
-  embedding: doublePrecision("embedding").array().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export interface Search {
+  id: number;
+  ticker: string;
+  exchange: string;
+  startDate: string;
+  endDate: string;
+  beta: number | null;
+  peers: { ticker: string; name: string; beta: number | null; sector: string; similarityScore?: number; keywords?: string[]; confidence?: "High" | "Medium" | "Fallback" }[];
+  createdAt: Date | null;
+}
 
-export const insertSearchSchema = createInsertSchema(searches).omit({ id: true, createdAt: true });
-export const insertCompanyProfileSchema = createInsertSchema(companyProfiles);
+export type InsertSearch = Omit<Search, "id" | "createdAt">;
 
-export type Search = typeof searches.$inferSelect;
-export type InsertSearch = z.infer<typeof insertSearchSchema>;
-export type CompanyProfile = typeof companyProfiles.$inferSelect;
-export type InsertCompanyProfile = z.infer<typeof insertCompanyProfileSchema>;
+export interface CompanyProfile {
+  ticker: string;
+  keywords: string[];
+  embedding: number[];
+  updatedAt: Date | null;
+}
+
+export type InsertCompanyProfile = Omit<CompanyProfile, "updatedAt">;
 
 // API Request/Response Types
 export const calculateBetaSchema = z.object({
