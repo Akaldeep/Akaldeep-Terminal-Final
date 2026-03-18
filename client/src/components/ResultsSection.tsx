@@ -124,7 +124,7 @@ export function ResultsSection({ data }: Props) {
             </div>
             <span className="text-xs font-mono text-primary uppercase tracking-widest font-semibold">Live Calculation Engine</span>
           </div>
-          <div className="flex flex-wrap gap-4 text-[10px] font-mono text-white/60">
+          <div className="flex flex-wrap gap-4 text-[10px] font-mono text-white/80">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Beta computed from <span className="text-white/90">{data.dataPoints?.toLocaleString() ?? "—"} daily price observations</span>
@@ -252,7 +252,7 @@ export function ResultsSection({ data }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-border">
           {[{ label: "Average Beta", v: avgBeta }, { label: "Median Beta", v: medianBeta }].map(({ label, v }) => (
             <div key={label} className="p-8 flex flex-col items-center gap-2">
-              <span className="text-[9px] font-mono text-white/50 uppercase tracking-[0.18em]">{label}</span>
+              <span className="text-[9px] font-mono text-white/70 uppercase tracking-[0.18em]">{label}</span>
               <div className="font-display text-5xl text-white/80">{v !== null ? v.toFixed(3) : "—"}</div>
               {v !== null && (
                 <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full ${data.beta > v ? "bg-red-500/10 text-red-400" : "bg-emerald-500/10 text-emerald-400"}`}>
@@ -338,16 +338,16 @@ export function ResultsSection({ data }: Props) {
           <Table className="premium-table">
             <TableHeader>
               <TableRow className="hover:bg-transparent border-border">
-                <TableHead className="w-8 pl-5 py-3 text-[8px] font-mono uppercase tracking-widest text-white/45">#</TableHead>
-                <TableHead className="min-w-[180px] py-3 text-[8px] font-mono uppercase tracking-widest text-white/45">Company</TableHead>
-                <TableHead className="text-right py-3 text-[8px] font-mono uppercase tracking-widest text-white/45 whitespace-nowrap">
+                <TableHead className="w-8 pl-5 py-3 text-[11px] font-mono uppercase tracking-widest text-white/60">#</TableHead>
+                <TableHead className="min-w-[180px] py-3 text-[11px] font-mono uppercase tracking-widest text-white/60">Company</TableHead>
+                <TableHead className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
                   Beta <span className="text-[7px] text-white/15 normal-case font-normal">(β)</span>
                 </TableHead>
-                <TableHead className="text-right py-3 text-[8px] font-mono uppercase tracking-widest text-white/45 whitespace-nowrap">
+                <TableHead className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
                   Alpha <span className="text-[7px] text-white/15 normal-case font-normal">(α)</span>
                 </TableHead>
                 {ALL_METRIC_IDS.filter(id => visible.includes(id)).map(id => (
-                  <TableHead key={id} className="text-right py-3 text-[8px] font-mono uppercase tracking-widest text-white/45 whitespace-nowrap">
+                  <TableHead key={id} className="text-right py-3 text-[11px] font-mono uppercase tracking-widest text-white/60 whitespace-nowrap">
                     {METRIC_DEFS[id].short}
                   </TableHead>
                 ))}
@@ -363,16 +363,16 @@ export function ResultsSection({ data }: Props) {
                     transition={{ delay: idx * 0.04, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="border-b border-border/40 last:border-0 hover:bg-white/[0.025] transition-colors"
                   >
-                    <TableCell className="pl-5 py-3.5 font-mono text-[9px] text-white/45 tabular-nums">{idx + 1}</TableCell>
+                    <TableCell className="pl-5 py-3.5 font-mono text-xs text-white/60 tabular-nums">{idx + 1}</TableCell>
                     <TableCell className="py-3.5">
                       <div className="flex flex-col gap-0.5">
                         <a href={peer.sourceUrl || `https://finance.yahoo.com/quote/${peer.ticker}`} target="_blank" rel="noopener noreferrer"
-                          className="text-sm font-semibold text-white/80 hover:text-primary transition-colors leading-tight flex items-center gap-1 group">
+                          className="text-sm font-medium text-white/90 hover:text-primary transition-colors leading-tight flex items-center gap-1 group">
                           {peer.name}
                           <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-40 transition-opacity" />
                         </a>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="font-mono text-[9px] text-white/50 uppercase tracking-wider">{peer.ticker}</span>
+                          <span className="font-mono text-xs text-white/70 uppercase tracking-wider">{peer.ticker}</span>
                           {peer.industry && (
                             <span className="text-[7px] font-mono px-1 py-px bg-primary/8 border border-primary/15 rounded text-primary/50 uppercase tracking-wide">
                               {peer.industry}
@@ -387,7 +387,7 @@ export function ResultsSection({ data }: Props) {
                       </span>
                     </TableCell>
                     <TableCell className="text-right py-3.5">
-                      <span className="font-mono text-xs text-white/55 tabular-nums">
+                      <span className="font-mono text-xs text-white/70 tabular-nums">
                         {peer.alpha !== null && peer.alpha !== undefined ? Number(peer.alpha).toFixed(5) : "—"}
                       </span>
                     </TableCell>
@@ -395,7 +395,7 @@ export function ResultsSection({ data }: Props) {
                       const v = val(peer, id);
                       return (
                         <TableCell key={id} className="text-right py-3.5">
-                          <span className="font-mono text-xs text-white/60 tabular-nums whitespace-nowrap">
+                          <span className="font-mono text-xs text-white/85 tabular-nums whitespace-nowrap">
                             {v !== null ? METRIC_DEFS[id].fmt(v) : "—"}
                           </span>
                         </TableCell>

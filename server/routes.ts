@@ -139,6 +139,13 @@ async function yfSearch(query: string): Promise<any[]> {
   return data?.news ?? [];
 }
 
+// ── Symbol/quote search via v1/finance/search ─────────────────────────────
+async function yfSearchQuotes(query: string): Promise<any[]> {
+  const url  = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&newsCount=0&enableFuzzyQuery=false&quotesCount=5`;
+  const data = await yfFetch(url, 8000);
+  return data?.quotes ?? [];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXCEL — Damodaran industry classification
 // ─────────────────────────────────────────────────────────────────────────────
@@ -272,12 +279,16 @@ async function getPeers(ticker: string, exchange: string, exRate: number, compan
 
   // Step 5: return directly — NO Yahoo validation, NO market cap filter
   // Trust Damodaran Excel completely. marketCap filled later in calculate route.
-  return peers.slice(0, 30).map(p => ({
-    slug:     isNumeric(p.symbol) ? `${p.symbol}.BO` : `${p.symbol}${sfx}`,
-    industry: p.industry,
-    sector:   `${p.sector} > ${p.industry}`,
-    marketCap: 0,
-  }));
+  return peers.slice(0, 30).map(p => {
+    const cleanSymbol = p.symbol.split(",")[0].trim();
+    return {
+      slug:     isNumeric(cleanSymbol) ? `${cleanSymbol}.BO` : `${cleanSymbol}${sfx}`,
+      name:     p.name,
+      industry: p.industry,
+      sector:   `${p.sector} > ${p.industry}`,
+      marketCap: 0,
+    };
+  });
 }
 
 
@@ -444,15 +455,36 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
           if (mv && d.close) { ps.push(d.close); pm.push(mv); }
         });
 
-        const pMet   = calcMetrics(ps, pm);
-        const pcurr  = pq?.currency ?? "INR";
-        const pfcurr = pf?.financialData?.financialCurrency ?? pcurr;
+        const pMet = calcMetrics(ps, pm);
+
+        // NSE fallback: for BSE numeric codes with missing marketCap, try finding NSE listing
+        let effectivePq = pq;
+        let effectivePf = pf;
+        const initialMarketCap = yv(pf?.summaryDetail?.marketCap) ?? yv(pq?.marketCap) ?? 0;
+        if (initialMarketCap === 0 && /^\d+\.BO$/.test(peer.slug) && peer.name) {
+          const searchQuotes = await yfSearchQuotes(peer.name);
+          const nsSymbol = searchQuotes.find((q: any) => q.symbol?.endsWith('.NS'))?.symbol;
+          if (nsSymbol) {
+            console.log(`[Peers] NSE fallback: ${peer.slug} → ${nsSymbol}`);
+            const [nsPq, nsPf] = await Promise.all([
+              yfQuote(nsSymbol),
+              yfQuoteSummary(nsSymbol, ["financialData", "defaultKeyStatistics", "summaryDetail", "price"]),
+            ]);
+            if (nsPq) effectivePq = nsPq;
+            if (nsPf) effectivePf = nsPf;
+          }
+        }
+
+        const pcurr  = effectivePq?.currency ?? "INR";
+        const pfcurr = effectivePf?.financialData?.financialCurrency ?? pcurr;
         const ppf    = pcurr  === "USD" ? exRate : 1;
         const pff    = pfcurr === "USD" ? exRate : 1;
 
+        const cleanTicker = peer.slug.includes(",") ? peer.slug.split(",")[0] : peer.slug;
+
         return {
-          ticker:    peer.slug,
-          name:      pf?.price?.shortName ?? pq?.shortName ?? peer.slug,
+          ticker:    cleanTicker,
+          name:      effectivePf?.price?.longName ?? effectivePf?.price?.shortName ?? effectivePq?.longName ?? effectivePq?.shortName ?? peer.name ?? peer.slug,
           industry:  peer.industry,
           sector:    peer.sector,
           beta:            pMet?.beta        ?? null,
@@ -460,29 +492,42 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
           alpha:           pMet?.alpha       ?? null,
           correlation:     pMet?.correlation ?? null,
           rSquared:        pMet?.rSquared    ?? null,
-          marketCap:       (yv(pf?.summaryDetail?.marketCap)         ?? yv(pq?.marketCap) ?? 0) * ppf,
-          revenue:         (yv(pf?.financialData?.totalRevenue)      ?? 0) * pff,
-          enterpriseValue: (yv(pf?.defaultKeyStatistics?.enterpriseValue) ?? 0) * ppf,
-          evRevenueMultiple: yv(pf?.defaultKeyStatistics?.enterpriseValue) && yv(pf?.financialData?.totalRevenue)
-            ? yv(pf.defaultKeyStatistics.enterpriseValue)! / (yv(pf.financialData.totalRevenue)! * pff / ppf) : undefined,
-          peRatio:         yv(pf?.summaryDetail?.trailingPE),
-          pbRatio:         yv(pf?.defaultKeyStatistics?.priceToBook),
-          dividendYield:   yv(pf?.summaryDetail?.dividendYield),
-          ebitda:          (yv(pf?.financialData?.ebitda) ?? 0) * pff,
-          debtToEquity:    yv(pf?.financialData?.debtToEquity),
-          profitMargin:    yv(pf?.financialData?.profitMargins),
-          grossMargin:     yv(pf?.financialData?.grossMargins),
-          operatingMargin: yv(pf?.financialData?.operatingMargins),
-          returnOnEquity:  yv(pf?.financialData?.returnOnEquity),
-          returnOnAssets:  yv(pf?.financialData?.returnOnAssets),
-          currentRatio:    yv(pf?.financialData?.currentRatio),
-          sourceUrl: `https://finance.yahoo.com/quote/${peer.slug}`,
+          marketCap:       (yv(effectivePf?.summaryDetail?.marketCap)         ?? yv(effectivePq?.marketCap) ?? 0) * ppf,
+          revenue:         (yv(effectivePf?.financialData?.totalRevenue)      ?? 0) * pff,
+          enterpriseValue: (yv(effectivePf?.defaultKeyStatistics?.enterpriseValue) ?? 0) * ppf,
+          evRevenueMultiple: yv(effectivePf?.defaultKeyStatistics?.enterpriseValue) && yv(effectivePf?.financialData?.totalRevenue)
+            ? yv(effectivePf.defaultKeyStatistics.enterpriseValue)! / (yv(effectivePf.financialData.totalRevenue)! * pff / ppf) : undefined,
+          peRatio:         yv(effectivePf?.summaryDetail?.trailingPE),
+          pbRatio:         yv(effectivePf?.defaultKeyStatistics?.priceToBook),
+          dividendYield:   yv(effectivePf?.summaryDetail?.dividendYield),
+          ebitda:          (yv(effectivePf?.financialData?.ebitda) ?? 0) * pff,
+          debtToEquity:    yv(effectivePf?.financialData?.debtToEquity),
+          profitMargin:    yv(effectivePf?.financialData?.profitMargins),
+          grossMargin:     yv(effectivePf?.financialData?.grossMargins),
+          operatingMargin: yv(effectivePf?.financialData?.operatingMargins),
+          returnOnEquity:  yv(effectivePf?.financialData?.returnOnEquity),
+          returnOnAssets:  yv(effectivePf?.financialData?.returnOnAssets),
+          currentRatio:    yv(effectivePf?.financialData?.currentRatio),
+          sourceUrl: `https://finance.yahoo.com/quote/${cleanTicker}`,
         };
       }));
 
-      const finalPeers = peerResults
-        .filter((p): p is NonNullable<typeof p> => p !== null && p.beta !== null)
-        .sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
+      const validPeers = peerResults.filter((p): p is NonNullable<typeof p> => p !== null && p.beta !== null);
+      const targetMarketCap = target.marketCap ?? 0;
+
+      // Group A: peers with marketCap data; Group B: peers without
+      const groupA = validPeers.filter(p => (p.marketCap ?? 0) > 0);
+      const groupB = validPeers.filter(p => !p.marketCap || p.marketCap <= 0);
+
+      // Sort group A by proximity to target market cap (most size-comparable first)
+      groupA.sort((a, b) => Math.abs((a.marketCap ?? 0) - targetMarketCap) - Math.abs((b.marketCap ?? 0) - targetMarketCap));
+
+      // Select top 10 — fill remaining slots from group B if needed
+      const selected = groupA.slice(0, 10);
+      if (selected.length < 10) selected.push(...groupB.slice(0, 10 - selected.length));
+
+      // Final display order: descending by marketCap (largest first)
+      const finalPeers = selected.sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
 
       await storage.createSearch({ ticker: full, exchange, startDate, endDate, beta: metrics.beta, peers: finalPeers as any });
       res.json({ ...target, peers: finalPeers });

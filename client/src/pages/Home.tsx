@@ -49,8 +49,8 @@ function IndexBadge({ label, data }: { label: string; data: IndexData | null }) 
     <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
       className="flex items-center gap-3 px-4 py-2 rounded bg-white/6 border border-white/12 hover:border-primary/40 transition-colors">
       <div className="flex flex-col">
-        <span className="text-[10px] font-mono text-white/60 uppercase tracking-wider font-semibold">{label}</span>
-        <span className="text-[9px] font-mono text-white/35">Last Close · {dateLabel}</span>
+        <span className="text-[10px] font-mono text-white/75 uppercase tracking-wider font-semibold">{label}</span>
+        <span className="text-[9px] font-mono text-white/55">Last Close · {dateLabel}</span>
       </div>
       <span className="font-mono text-base font-bold text-white">
         {data.price.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
@@ -121,11 +121,11 @@ function NewsTicker({ items }: { items: NewsItem[] }) {
                       onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = "none"; }} />
                   </div>
                 )}
-                <span className="text-[10px] font-mono text-white/75 group-hover:text-white/95 transition-colors max-w-xs truncate">
+                <span className="text-xs font-mono text-white/75 group-hover:text-white/95 transition-colors max-w-xs truncate">
                   <span className="text-primary/50 mr-2">◆</span>
                   {item.title}
                 </span>
-                <span className="text-[9px] font-mono text-primary/60 shrink-0">{item.publisher}</span>
+                <span className="text-[10px] font-mono text-primary/60 shrink-0">{item.publisher}</span>
                 <span className="text-white/20 mx-1">|</span>
               </a>
             ))}
@@ -269,7 +269,7 @@ export default function Home() {
               <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/6">
                 <motion.div className="w-1.5 h-1.5 rounded-full bg-primary"
                   animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="text-[10px] font-mono text-white/60 uppercase tracking-[0.2em] font-medium">
+                <span className="text-[11px] font-mono text-white/75 uppercase tracking-[0.2em] font-medium">
                   Analysis Configuration
                 </span>
               </div>
@@ -278,7 +278,7 @@ export default function Home() {
                   <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-3 items-end">
                     <FormField control={form.control} name="ticker" render={({ field }) => (
                       <FormItem className="min-w-[140px] flex-1 space-y-1">
-                        <FormLabel className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Stock Ticker</FormLabel>
+                        <FormLabel className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Stock Ticker</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-white/20" />
@@ -291,7 +291,7 @@ export default function Home() {
 
                     <FormField control={form.control} name="exchange" render={({ field }) => (
                       <FormItem className="min-w-[95px] space-y-1">
-                        <FormLabel className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Exchange</FormLabel>
+                        <FormLabel className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Exchange</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="h-8 font-mono text-sm bg-white/5 border-white/10 text-white focus:ring-0 focus:border-primary/50">
@@ -308,7 +308,7 @@ export default function Home() {
 
                     <FormField control={form.control} name="period" render={({ field }) => (
                       <FormItem className="min-w-[125px] space-y-1">
-                        <FormLabel className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Period</FormLabel>
+                        <FormLabel className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">Period</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="h-8 font-mono text-sm bg-white/5 border-white/10 text-white focus:ring-0 focus:border-primary/50">
@@ -326,7 +326,7 @@ export default function Home() {
 
                     <FormField control={form.control} name="endDate" render={({ field }) => (
                       <FormItem className="min-w-[145px] flex-1 space-y-1">
-                        <FormLabel className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">End Date</FormLabel>
+                        <FormLabel className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-medium">End Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
